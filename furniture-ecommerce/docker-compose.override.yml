@@ -1,0 +1,31 @@
+# Docker Compose override for development
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - SEED_DATABASE=true
+    volumes:
+      # Mount source code for development
+      - .:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    ports:
+      - "8000:80"
+
+  mysql:
+    ports:
+      - "3306:3306"
+    volumes:
+      # Mount MySQL data for persistence in development
+      - mysql_dev_data:/var/lib/mysql
+
+  redis:
+    ports:
+      - "6379:6379"
+
+volumes:
+  mysql_dev_data:
+    driver: local
